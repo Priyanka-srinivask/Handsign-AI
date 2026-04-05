@@ -156,8 +156,3 @@ Get a free Groq API key at [console.groq.com](https://console.groq.com)
  
 Built at SharkHack 2026 — Simmons University, Boston MA
  
----
- 
-## License
- 
-MIT License — see [LICENSE](LICENSE) for details.
