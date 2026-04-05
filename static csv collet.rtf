@@ -1,0 +1,175 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red183\green111\blue179;\red24\green24\blue24;\red193\green193\blue193;
+\red67\green192\blue160;\red89\green138\blue67;\red66\green179\blue255;\red202\green202\blue202;\red194\green126\blue101;
+\red167\green197\blue152;\red212\green214\blue154;\red140\green211\blue254;\red70\green137\blue204;\red205\green173\blue106;
+}
+{\*\expandedcolortbl;;\cssrgb\c77255\c52549\c75294;\cssrgb\c12157\c12157\c12157;\cssrgb\c80000\c80000\c80000;
+\cssrgb\c30588\c78824\c69020;\cssrgb\c41569\c60000\c33333;\cssrgb\c30980\c75686\c100000;\cssrgb\c83137\c83137\c83137;\cssrgb\c80784\c56863\c47059;
+\cssrgb\c70980\c80784\c65882;\cssrgb\c86275\c86275\c66667;\cssrgb\c61176\c86275\c99608;\cssrgb\c33725\c61176\c83922;\cssrgb\c84314\c72941\c49020;
+}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 import\cf4 \strokec4  \cf5 \strokec5 cv2\cf4 \cb1 \strokec4 \
+\cf2 \cb3 \strokec2 import\cf4 \strokec4  mediapipe \cf2 \strokec2 as\cf4 \strokec4  \cf5 \strokec5 mp\cf4 \cb1 \strokec4 \
+\cf2 \cb3 \strokec2 from\cf4 \strokec4  mediapipe.tasks \cf2 \strokec2 import\cf4 \strokec4  python \cf2 \strokec2 as\cf4 \strokec4  mp_python\cb1 \
+\cf2 \cb3 \strokec2 from\cf4 \strokec4  mediapipe.tasks.python.vision \cf2 \strokec2 import\cf4 \strokec4  HandLandmarker, HandLandmarkerOptions, RunningMode\cb1 \
+\cf2 \cb3 \strokec2 import\cf4 \strokec4  \cf5 \strokec5 csv\cf4 \cb1 \strokec4 \
+\cf2 \cb3 \strokec2 import\cf4 \strokec4  \cf5 \strokec5 os\cf4 \cb1 \strokec4 \
+\cf2 \cb3 \strokec2 import\cf4 \strokec4  \cf5 \strokec5 urllib\cf4 \strokec4 .\cf5 \strokec5 request\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3 \strokec6 # \uc0\u9472 \u9472  CONFIG \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 SIGNS\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  [\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf9 \strokec9 'a'\cf4 \strokec4 ,\cf9 \strokec9 'b'\cf4 \strokec4 ,\cf9 \strokec9 'c'\cf4 \strokec4 ,\cf9 \strokec9 'd'\cf4 \strokec4 ,\cf9 \strokec9 'e'\cf4 \strokec4 ,\cf9 \strokec9 'f'\cf4 \strokec4 ,\cf9 \strokec9 'g'\cf4 \strokec4 ,\cf9 \strokec9 'h'\cf4 \strokec4 ,\cf9 \strokec9 'i'\cf4 \strokec4 ,\cf9 \strokec9 'j'\cf4 \strokec4 ,\cf9 \strokec9 'k'\cf4 \strokec4 ,\cf9 \strokec9 'l'\cf4 \strokec4 ,\cf9 \strokec9 'm'\cf4 \strokec4 ,\cb1 \
+\cb3     \cf9 \strokec9 'n'\cf4 \strokec4 ,\cf9 \strokec9 'o'\cf4 \strokec4 ,\cf9 \strokec9 'p'\cf4 \strokec4 ,\cf9 \strokec9 'q'\cf4 \strokec4 ,\cf9 \strokec9 'r'\cf4 \strokec4 ,\cf9 \strokec9 's'\cf4 \strokec4 ,\cf9 \strokec9 't'\cf4 \strokec4 ,\cf9 \strokec9 'u'\cf4 \strokec4 ,\cf9 \strokec9 'v'\cf4 \strokec4 ,\cf9 \strokec9 'w'\cf4 \strokec4 ,\cf9 \strokec9 'x'\cf4 \strokec4 ,\cf9 \strokec9 'y'\cf4 \strokec4 ,\cf9 \strokec9 'z'\cf4 \strokec4 ,\cb1 \
+\cb3     \cf9 \strokec9 'yes'\cf4 \strokec4 ,\cf9 \strokec9 'no'\cf4 \strokec4 ,\cf9 \strokec9 'stop'\cf4 \strokec4 ,\cf9 \strokec9 'i_love_you'\cf4 \cb1 \strokec4 \
+\cb3 ]\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 SAMPLES_PER_SIGN\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf10 \strokec10 50\cf4 \cb1 \strokec4 \
+\cf7 \cb3 \strokec7 OUTPUT_CSV\cf4 \strokec4        \cf8 \strokec8 =\cf4 \strokec4  \cf9 \strokec9 "data/static_landmarks.csv"\cf4 \cb1 \strokec4 \
+\cf7 \cb3 \strokec7 MODEL_PATH\cf4 \strokec4        \cf8 \strokec8 =\cf4 \strokec4  \cf9 \strokec9 "hand_landmarker.task"\cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3 \strokec6 # \uc0\u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 os\cf4 \strokec4 .\cf11 \strokec11 makedirs\cf4 \strokec4 (\cf9 \strokec9 "data"\cf4 \strokec4 , \cf12 \strokec12 exist_ok\cf8 \strokec8 =\cf13 \strokec13 True\cf4 \strokec4 )\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3 \strokec6 # \uc0\u9472 \u9472  Download model if not present \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 if\cf4 \strokec4  \cf13 \strokec13 not\cf4 \strokec4  \cf5 \strokec5 os\cf4 \strokec4 .\cf12 \strokec12 path\cf4 \strokec4 .\cf11 \strokec11 exists\cf4 \strokec4 (\cf7 \strokec7 MODEL_PATH\cf4 \strokec4 ):\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf11 \strokec11 print\cf4 \strokec4 (\cf9 \strokec9 "\uc0\u9196  Downloading hand landmarker model (~8MB)..."\cf4 \strokec4 )\cb1 \
+\cb3     \cf5 \strokec5 urllib\cf4 \strokec4 .\cf5 \strokec5 request\cf4 \strokec4 .\cf11 \strokec11 urlretrieve\cf4 \strokec4 (\cb1 \
+\cb3         \cf9 \strokec9 "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"\cf4 \strokec4 ,\cb1 \
+\cb3         \cf7 \strokec7 MODEL_PATH\cf4 \cb1 \strokec4 \
+\cb3     )\cb1 \
+\cb3     \cf11 \strokec11 print\cf4 \strokec4 (\cf9 \strokec9 "\uc0\u9989  Model downloaded!"\cf4 \strokec4 )\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3 \strokec6 # \uc0\u9472 \u9472  Setup HandLandmarker \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf12 \cb3 \strokec12 options\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  HandLandmarkerOptions(\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf12 \strokec12 base_options\cf8 \strokec8 =\cf4 \strokec4 mp_python.BaseOptions(\cf12 \strokec12 model_asset_path\cf8 \strokec8 =\cf7 \strokec7 MODEL_PATH\cf4 \strokec4 ),\cb1 \
+\cb3     \cf12 \strokec12 running_mode\cf8 \strokec8 =\cf4 \strokec4 RunningMode.IMAGE,\cb1 \
+\cb3     \cf12 \strokec12 num_hands\cf8 \strokec8 =\cf10 \strokec10 1\cf4 \strokec4 ,\cb1 \
+\cb3     \cf12 \strokec12 min_hand_detection_confidence\cf8 \strokec8 =\cf10 \strokec10 0.5\cf4 \strokec4 ,\cb1 \
+\cb3     \cf12 \strokec12 min_hand_presence_confidence\cf8 \strokec8 =\cf10 \strokec10 0.5\cf4 \strokec4 ,\cb1 \
+\cb3     \cf12 \strokec12 min_tracking_confidence\cf8 \strokec8 =\cf10 \strokec10 0.5\cf4 \cb1 \strokec4 \
+\cb3 )\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf12 \cb3 \strokec12 detector\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  HandLandmarker.create_from_options(\cf12 \strokec12 options\cf4 \strokec4 )\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb3 \strokec6 # \uc0\u9472 \u9472  CSV header \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \cf4 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 if\cf4 \strokec4  \cf13 \strokec13 not\cf4 \strokec4  \cf5 \strokec5 os\cf4 \strokec4 .\cf12 \strokec12 path\cf4 \strokec4 .\cf11 \strokec11 exists\cf4 \strokec4 (\cf7 \strokec7 OUTPUT_CSV\cf4 \strokec4 ):\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf2 \strokec2 with\cf4 \strokec4  \cf11 \strokec11 open\cf4 \strokec4 (\cf7 \strokec7 OUTPUT_CSV\cf4 \strokec4 , \cf9 \strokec9 'w'\cf4 \strokec4 , \cf12 \strokec12 newline\cf8 \strokec8 =\cf9 \strokec9 ''\cf4 \strokec4 ) \cf2 \strokec2 as\cf4 \strokec4  \cf12 \strokec12 f\cf4 \strokec4 :\cb1 \
+\cb3         \cf12 \strokec12 cols\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  [\cf13 \strokec13 f\cf9 \strokec9 "\cf13 \strokec13 \{\cf12 \strokec12 ax\cf13 \strokec13 \}\{\cf12 \strokec12 i\cf13 \strokec13 \}\cf9 \strokec9 "\cf4 \strokec4  \cf2 \strokec2 for\cf4 \strokec4  \cf12 \strokec12 i\cf4 \strokec4  \cf2 \strokec2 in\cf4 \strokec4  \cf5 \strokec5 range\cf4 \strokec4 (\cf10 \strokec10 21\cf4 \strokec4 ) \cf2 \strokec2 for\cf4 \strokec4  \cf12 \strokec12 ax\cf4 \strokec4  \cf2 \strokec2 in\cf4 \strokec4  [\cf9 \strokec9 'x'\cf4 \strokec4 ,\cf9 \strokec9 'y'\cf4 \strokec4 ,\cf9 \strokec9 'z'\cf4 \strokec4 ]]\cb1 \
+\cb3         \cf5 \strokec5 csv\cf4 \strokec4 .\cf11 \strokec11 writer\cf4 \strokec4 (\cf12 \strokec12 f\cf4 \strokec4 ).\cf11 \strokec11 writerow\cf4 \strokec4 (\cf12 \strokec12 cols\cf4 \strokec4  \cf8 \strokec8 +\cf4 \strokec4  [\cf9 \strokec9 'label'\cf4 \strokec4 ])\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf12 \cb3 \strokec12 cap\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf5 \strokec5 cv2\cf4 \strokec4 .VideoCapture(\cf10 \strokec10 0\cf4 \strokec4 )\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf13 \cb3 \strokec13 def\cf4 \strokec4  \cf11 \strokec11 extract_landmarks\cf4 \strokec4 (\cf12 \strokec12 frame\cf4 \strokec4 ):\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf9 \strokec9 """Extract 63 landmark values using new MediaPipe Tasks API."""\cf4 \cb1 \strokec4 \
+\cb3     \cf12 \strokec12 rgb\cf4 \strokec4     \cf8 \strokec8 =\cf4 \strokec4  \cf5 \strokec5 cv2\cf4 \strokec4 .cvtColor(\cf12 \strokec12 frame\cf4 \strokec4 , \cf5 \strokec5 cv2\cf4 \strokec4 .COLOR_BGR2RGB)\cb1 \
+\cb3     \cf12 \strokec12 mp_img\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf5 \strokec5 mp\cf4 \strokec4 .Image(\cf12 \strokec12 image_format\cf8 \strokec8 =\cf5 \strokec5 mp\cf4 \strokec4 .ImageFormat.SRGB, \cf12 \strokec12 data\cf8 \strokec8 =\cf12 \strokec12 rgb\cf4 \strokec4 )\cb1 \
+\cb3     \cf12 \strokec12 result\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf12 \strokec12 detector\cf4 \strokec4 .detect(\cf12 \strokec12 mp_img\cf4 \strokec4 )\cb1 \
+\
+\cb3     \cf2 \strokec2 if\cf4 \strokec4  \cf12 \strokec12 result\cf4 \strokec4 .hand_landmarks:\cb1 \
+\cb3         \cf12 \strokec12 lm\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf12 \strokec12 result\cf4 \strokec4 .hand_landmarks[\cf10 \strokec10 0\cf4 \strokec4 ]  \cf6 \strokec6 # first hand\cf4 \cb1 \strokec4 \
+\cb3         \cf6 \strokec6 # Draw dots on hand\cf4 \cb1 \strokec4 \
+\cb3         \cf12 \strokec12 h\cf4 \strokec4 , \cf12 \strokec12 w\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf12 \strokec12 frame\cf4 \strokec4 .shape[:\cf10 \strokec10 2\cf4 \strokec4 ]\cb1 \
+\cb3         \cf2 \strokec2 for\cf4 \strokec4  \cf12 \strokec12 pt\cf4 \strokec4  \cf2 \strokec2 in\cf4 \strokec4  \cf12 \strokec12 lm\cf4 \strokec4 :\cb1 \
+\cb3             \cf12 \strokec12 cx\cf4 \strokec4 , \cf12 \strokec12 cy\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf5 \strokec5 int\cf4 \strokec4 (\cf12 \strokec12 pt\cf4 \strokec4 .x \cf8 \strokec8 *\cf4 \strokec4  \cf12 \strokec12 w\cf4 \strokec4 ), \cf5 \strokec5 int\cf4 \strokec4 (\cf12 \strokec12 pt\cf4 \strokec4 .y \cf8 \strokec8 *\cf4 \strokec4  \cf12 \strokec12 h\cf4 \strokec4 )\cb1 \
+\cb3             \cf5 \strokec5 cv2\cf4 \strokec4 .circle(\cf12 \strokec12 frame\cf4 \strokec4 , (\cf12 \strokec12 cx\cf4 \strokec4 , \cf12 \strokec12 cy\cf4 \strokec4 ), \cf10 \strokec10 5\cf4 \strokec4 , (\cf10 \strokec10 0\cf4 \strokec4 , \cf10 \strokec10 255\cf4 \strokec4 , \cf10 \strokec10 0\cf4 \strokec4 ), \cf8 \strokec8 -\cf10 \strokec10 1\cf4 \strokec4 )\cb1 \
+\cb3         \cf6 \strokec6 # Draw connections\cf4 \cb1 \strokec4 \
+\cb3         \cf2 \strokec2 for\cf4 \strokec4  \cf12 \strokec12 i\cf4 \strokec4 , \cf12 \strokec12 j\cf4 \strokec4  \cf2 \strokec2 in\cf4 \strokec4  [(\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 1\cf4 \strokec4 ),(\cf10 \strokec10 1\cf4 \strokec4 ,\cf10 \strokec10 2\cf4 \strokec4 ),(\cf10 \strokec10 2\cf4 \strokec4 ,\cf10 \strokec10 3\cf4 \strokec4 ),(\cf10 \strokec10 3\cf4 \strokec4 ,\cf10 \strokec10 4\cf4 \strokec4 ),\cb1 \
+\cb3                      (\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 5\cf4 \strokec4 ),(\cf10 \strokec10 5\cf4 \strokec4 ,\cf10 \strokec10 6\cf4 \strokec4 ),(\cf10 \strokec10 6\cf4 \strokec4 ,\cf10 \strokec10 7\cf4 \strokec4 ),(\cf10 \strokec10 7\cf4 \strokec4 ,\cf10 \strokec10 8\cf4 \strokec4 ),\cb1 \
+\cb3                      (\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 9\cf4 \strokec4 ),(\cf10 \strokec10 9\cf4 \strokec4 ,\cf10 \strokec10 10\cf4 \strokec4 ),(\cf10 \strokec10 10\cf4 \strokec4 ,\cf10 \strokec10 11\cf4 \strokec4 ),(\cf10 \strokec10 11\cf4 \strokec4 ,\cf10 \strokec10 12\cf4 \strokec4 ),\cb1 \
+\cb3                      (\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 13\cf4 \strokec4 ),(\cf10 \strokec10 13\cf4 \strokec4 ,\cf10 \strokec10 14\cf4 \strokec4 ),(\cf10 \strokec10 14\cf4 \strokec4 ,\cf10 \strokec10 15\cf4 \strokec4 ),(\cf10 \strokec10 15\cf4 \strokec4 ,\cf10 \strokec10 16\cf4 \strokec4 ),\cb1 \
+\cb3                      (\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 17\cf4 \strokec4 ),(\cf10 \strokec10 17\cf4 \strokec4 ,\cf10 \strokec10 18\cf4 \strokec4 ),(\cf10 \strokec10 18\cf4 \strokec4 ,\cf10 \strokec10 19\cf4 \strokec4 ),(\cf10 \strokec10 19\cf4 \strokec4 ,\cf10 \strokec10 20\cf4 \strokec4 ),\cb1 \
+\cb3                      (\cf10 \strokec10 5\cf4 \strokec4 ,\cf10 \strokec10 9\cf4 \strokec4 ),(\cf10 \strokec10 9\cf4 \strokec4 ,\cf10 \strokec10 13\cf4 \strokec4 ),(\cf10 \strokec10 13\cf4 \strokec4 ,\cf10 \strokec10 17\cf4 \strokec4 )]:\cb1 \
+\cb3             \cf12 \strokec12 x1\cf4 \strokec4 ,\cf12 \strokec12 y1\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf5 \strokec5 int\cf4 \strokec4 (\cf12 \strokec12 lm\cf4 \strokec4 [\cf12 \strokec12 i\cf4 \strokec4 ].x\cf8 \strokec8 *\cf12 \strokec12 w\cf4 \strokec4 ), \cf5 \strokec5 int\cf4 \strokec4 (\cf12 \strokec12 lm\cf4 \strokec4 [\cf12 \strokec12 i\cf4 \strokec4 ].y\cf8 \strokec8 *\cf12 \strokec12 h\cf4 \strokec4 )\cb1 \
+\cb3             \cf12 \strokec12 x2\cf4 \strokec4 ,\cf12 \strokec12 y2\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf5 \strokec5 int\cf4 \strokec4 (\cf12 \strokec12 lm\cf4 \strokec4 [\cf12 \strokec12 j\cf4 \strokec4 ].x\cf8 \strokec8 *\cf12 \strokec12 w\cf4 \strokec4 ), \cf5 \strokec5 int\cf4 \strokec4 (\cf12 \strokec12 lm\cf4 \strokec4 [\cf12 \strokec12 j\cf4 \strokec4 ].y\cf8 \strokec8 *\cf12 \strokec12 h\cf4 \strokec4 )\cb1 \
+\cb3             \cf5 \strokec5 cv2\cf4 \strokec4 .line(\cf12 \strokec12 frame\cf4 \strokec4 , (\cf12 \strokec12 x1\cf4 \strokec4 ,\cf12 \strokec12 y1\cf4 \strokec4 ), (\cf12 \strokec12 x2\cf4 \strokec4 ,\cf12 \strokec12 y2\cf4 \strokec4 ), (\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 200\cf4 \strokec4 ,\cf10 \strokec10 0\cf4 \strokec4 ), \cf10 \strokec10 1\cf4 \strokec4 )\cb1 \
+\
+\cb3         \cf2 \strokec2 return\cf4 \strokec4  [\cf12 \strokec12 v\cf4 \strokec4  \cf2 \strokec2 for\cf4 \strokec4  \cf12 \strokec12 pt\cf4 \strokec4  \cf2 \strokec2 in\cf4 \strokec4  \cf12 \strokec12 lm\cf4 \strokec4  \cf2 \strokec2 for\cf4 \strokec4  \cf12 \strokec12 v\cf4 \strokec4  \cf2 \strokec2 in\cf4 \strokec4  (\cf12 \strokec12 pt\cf4 \strokec4 .x, \cf12 \strokec12 pt\cf4 \strokec4 .y, \cf12 \strokec12 pt\cf4 \strokec4 .z)]\cb1 \
+\cb3     \cf2 \strokec2 return\cf4 \strokec4  \cf13 \strokec13 None\cf4 \cb1 \strokec4 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb3 \strokec11 print\cf4 \strokec4 (\cf9 \strokec9 "\cf14 \strokec14 \\n\cf9 \strokec9 \uc0\u55358 \u56601  ASL Static Sign Collector"\cf4 \strokec4 )\cb1 \
+\cf11 \cb3 \strokec11 print\cf4 \strokec4 (\cf9 \strokec9 "Press SPACE to capture | N to skip | Q to quit\cf14 \strokec14 \\n\cf9 \strokec9 "\cf4 \strokec4 )\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 for\cf4 \strokec4  \cf12 \strokec12 sign\cf4 \strokec4  \cf2 \strokec2 in\cf4 \strokec4  \cf7 \strokec7 SIGNS\cf4 \strokec4 :\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb3     \cf12 \strokec12 count\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf10 \strokec10 0\cf4 \cb1 \strokec4 \
+\cb3     \cf11 \strokec11 print\cf4 \strokec4 (\cf13 \strokec13 f\cf9 \strokec9 "\uc0\u55357 \u56393  Get ready for: [\cf13 \strokec13 \{\cf12 \strokec12 sign\cf4 \strokec4 .\cf11 \strokec11 upper\cf4 \strokec4 ()\cf13 \strokec13 \}\cf9 \strokec9 ]  \'97  need \cf13 \strokec13 \{\cf7 \strokec7 SAMPLES_PER_SIGN\cf13 \strokec13 \}\cf9 \strokec9  samples"\cf4 \strokec4 )\cb1 \
+\
+\cb3     \cf2 \strokec2 while\cf4 \strokec4  \cf12 \strokec12 count\cf4 \strokec4  \cf8 \strokec8 <\cf4 \strokec4  \cf7 \strokec7 SAMPLES_PER_SIGN\cf4 \strokec4 :\cb1 \
+\cb3         \cf12 \strokec12 ret\cf4 \strokec4 , \cf12 \strokec12 frame\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf12 \strokec12 cap\cf4 \strokec4 .read()\cb1 \
+\cb3         \cf2 \strokec2 if\cf4 \strokec4  \cf13 \strokec13 not\cf4 \strokec4  \cf12 \strokec12 ret\cf4 \strokec4 :\cb1 \
+\cb3             \cf2 \strokec2 break\cf4 \cb1 \strokec4 \
+\cb3         \cf12 \strokec12 frame\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf5 \strokec5 cv2\cf4 \strokec4 .flip(\cf12 \strokec12 frame\cf4 \strokec4 , \cf10 \strokec10 1\cf4 \strokec4 )\cb1 \
+\cb3         \cf12 \strokec12 landmarks\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf11 \strokec11 extract_landmarks\cf4 \strokec4 (\cf12 \strokec12 frame\cf4 \strokec4 )\cb1 \
+\
+\cb3         \cf6 \strokec6 # HUD\cf4 \cb1 \strokec4 \
+\cb3         \cf5 \strokec5 cv2\cf4 \strokec4 .putText(\cf12 \strokec12 frame\cf4 \strokec4 , \cf13 \strokec13 f\cf9 \strokec9 "Sign: \cf13 \strokec13 \{\cf12 \strokec12 sign\cf4 \strokec4 .\cf11 \strokec11 upper\cf4 \strokec4 ()\cf13 \strokec13 \}\cf9 \strokec9 "\cf4 \strokec4 , (\cf10 \strokec10 10\cf4 \strokec4 , \cf10 \strokec10 40\cf4 \strokec4 ),\cb1 \
+\cb3                     \cf5 \strokec5 cv2\cf4 \strokec4 .FONT_HERSHEY_SIMPLEX, \cf10 \strokec10 1.2\cf4 \strokec4 , (\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 255\cf4 \strokec4 ,\cf10 \strokec10 0\cf4 \strokec4 ), \cf10 \strokec10 2\cf4 \strokec4 )\cb1 \
+\cb3         \cf5 \strokec5 cv2\cf4 \strokec4 .putText(\cf12 \strokec12 frame\cf4 \strokec4 , \cf13 \strokec13 f\cf9 \strokec9 "Captured: \cf13 \strokec13 \{\cf12 \strokec12 count\cf13 \strokec13 \}\cf9 \strokec9 /\cf13 \strokec13 \{\cf7 \strokec7 SAMPLES_PER_SIGN\cf13 \strokec13 \}\cf9 \strokec9 "\cf4 \strokec4 , (\cf10 \strokec10 10\cf4 \strokec4 , \cf10 \strokec10 80\cf4 \strokec4 ),\cb1 \
+\cb3                     \cf5 \strokec5 cv2\cf4 \strokec4 .FONT_HERSHEY_SIMPLEX, \cf10 \strokec10 0.9\cf4 \strokec4 , (\cf10 \strokec10 255\cf4 \strokec4 ,\cf10 \strokec10 255\cf4 \strokec4 ,\cf10 \strokec10 0\cf4 \strokec4 ), \cf10 \strokec10 2\cf4 \strokec4 )\cb1 \
+\cb3         \cf5 \strokec5 cv2\cf4 \strokec4 .putText(\cf12 \strokec12 frame\cf4 \strokec4 , \cf9 \strokec9 "SPACE=capture  N=skip  Q=quit"\cf4 \strokec4 , (\cf10 \strokec10 10\cf4 \strokec4 , \cf10 \strokec10 115\cf4 \strokec4 ),\cb1 \
+\cb3                     \cf5 \strokec5 cv2\cf4 \strokec4 .FONT_HERSHEY_SIMPLEX, \cf10 \strokec10 0.6\cf4 \strokec4 , (\cf10 \strokec10 200\cf4 \strokec4 ,\cf10 \strokec10 200\cf4 \strokec4 ,\cf10 \strokec10 200\cf4 \strokec4 ), \cf10 \strokec10 1\cf4 \strokec4 )\cb1 \
+\
+\cb3         \cf2 \strokec2 if\cf4 \strokec4  \cf12 \strokec12 landmarks\cf4 \strokec4 :\cb1 \
+\cb3             \cf5 \strokec5 cv2\cf4 \strokec4 .putText(\cf12 \strokec12 frame\cf4 \strokec4 , \cf9 \strokec9 "Hand detected"\cf4 \strokec4 , (\cf10 \strokec10 10\cf4 \strokec4 , \cf10 \strokec10 150\cf4 \strokec4 ),\cb1 \
+\cb3                         \cf5 \strokec5 cv2\cf4 \strokec4 .FONT_HERSHEY_SIMPLEX, \cf10 \strokec10 0.6\cf4 \strokec4 , (\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 255\cf4 \strokec4 ,\cf10 \strokec10 0\cf4 \strokec4 ), \cf10 \strokec10 1\cf4 \strokec4 )\cb1 \
+\cb3         \cf2 \strokec2 else\cf4 \strokec4 :\cb1 \
+\cb3             \cf5 \strokec5 cv2\cf4 \strokec4 .putText(\cf12 \strokec12 frame\cf4 \strokec4 , \cf9 \strokec9 "No hand detected - show your hand!"\cf4 \strokec4 , (\cf10 \strokec10 10\cf4 \strokec4 , \cf10 \strokec10 150\cf4 \strokec4 ),\cb1 \
+\cb3                         \cf5 \strokec5 cv2\cf4 \strokec4 .FONT_HERSHEY_SIMPLEX, \cf10 \strokec10 0.6\cf4 \strokec4 , (\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 0\cf4 \strokec4 ,\cf10 \strokec10 255\cf4 \strokec4 ), \cf10 \strokec10 1\cf4 \strokec4 )\cb1 \
+\
+\cb3         \cf5 \strokec5 cv2\cf4 \strokec4 .imshow(\cf9 \strokec9 "ASL Collector - Static"\cf4 \strokec4 , \cf12 \strokec12 frame\cf4 \strokec4 )\cb1 \
+\cb3         \cf12 \strokec12 key\cf4 \strokec4  \cf8 \strokec8 =\cf4 \strokec4  \cf5 \strokec5 cv2\cf4 \strokec4 .waitKey(\cf10 \strokec10 30\cf4 \strokec4 ) \cf8 \strokec8 &\cf4 \strokec4  \cf13 \strokec13 0x\cf10 \strokec10 FF\cf4 \strokec4   \cf6 \strokec6 # wait 30ms \'97 more reliable on Mac\cf4 \cb1 \strokec4 \
+\
+\cb3         \cf2 \strokec2 if\cf4 \strokec4  \cf12 \strokec12 key\cf4 \strokec4  \cf8 \strokec8 ==\cf4 \strokec4  \cf10 \strokec10 32\cf4 \strokec4 :  \cf6 \strokec6 # 32 = SPACE (more reliable than ord(' ') on Mac)\cf4 \cb1 \strokec4 \
+\cb3             \cf2 \strokec2 if\cf4 \strokec4  \cf12 \strokec12 landmarks\cf4 \strokec4 :\cb1 \
+\cb3                 \cf2 \strokec2 with\cf4 \strokec4  \cf11 \strokec11 open\cf4 \strokec4 (\cf7 \strokec7 OUTPUT_CSV\cf4 \strokec4 , \cf9 \strokec9 'a'\cf4 \strokec4 , \cf12 \strokec12 newline\cf8 \strokec8 =\cf9 \strokec9 ''\cf4 \strokec4 ) \cf2 \strokec2 as\cf4 \strokec4  \cf12 \strokec12 f\cf4 \strokec4 :\cb1 \
+\cb3                     \cf5 \strokec5 csv\cf4 \strokec4 .\cf11 \strokec11 writer\cf4 \strokec4 (\cf12 \strokec12 f\cf4 \strokec4 ).\cf11 \strokec11 writerow\cf4 \strokec4 (\cf12 \strokec12 landmarks\cf4 \strokec4  \cf8 \strokec8 +\cf4 \strokec4  [\cf12 \strokec12 sign\cf4 \strokec4 ])\cb1 \
+\cb3                 \cf12 \strokec12 count\cf4 \strokec4  \cf8 \strokec8 +=\cf4 \strokec4  \cf10 \strokec10 1\cf4 \cb1 \strokec4 \
+\cb3                 \cf11 \strokec11 print\cf4 \strokec4 (\cf13 \strokec13 f\cf9 \strokec9 "  \uc0\u9989  \cf13 \strokec13 \{\cf12 \strokec12 sign\cf13 \strokec13 \}\cf9 \strokec9  \'97 sample \cf13 \strokec13 \{\cf12 \strokec12 count\cf13 \strokec13 \}\cf9 \strokec9 /\cf13 \strokec13 \{\cf7 \strokec7 SAMPLES_PER_SIGN\cf13 \strokec13 \}\cf9 \strokec9 "\cf4 \strokec4 )\cb1 \
+\cb3             \cf2 \strokec2 else\cf4 \strokec4 :\cb1 \
+\cb3                 \cf11 \strokec11 print\cf4 \strokec4 (\cf9 \strokec9 "  \uc0\u9888 \u65039   No hand detected \'97 move hand into frame!"\cf4 \strokec4 )\cb1 \
+\
+\cb3         \cf2 \strokec2 elif\cf4 \strokec4  \cf12 \strokec12 key\cf4 \strokec4  \cf8 \strokec8 ==\cf4 \strokec4  \cf11 \strokec11 ord\cf4 \strokec4 (\cf9 \strokec9 'n'\cf4 \strokec4 ):\cb1 \
+\cb3             \cf11 \strokec11 print\cf4 \strokec4 (\cf13 \strokec13 f\cf9 \strokec9 "  \uc0\u9197  Skipped [\cf13 \strokec13 \{\cf12 \strokec12 sign\cf13 \strokec13 \}\cf9 \strokec9 ]"\cf4 \strokec4 )\cb1 \
+\cb3             \cf2 \strokec2 break\cf4 \cb1 \strokec4 \
+\
+\cb3         \cf2 \strokec2 elif\cf4 \strokec4  \cf12 \strokec12 key\cf4 \strokec4  \cf8 \strokec8 ==\cf4 \strokec4  \cf11 \strokec11 ord\cf4 \strokec4 (\cf9 \strokec9 'q'\cf4 \strokec4 ):\cb1 \
+\cb3             \cf12 \strokec12 cap\cf4 \strokec4 .release()\cb1 \
+\cb3             \cf5 \strokec5 cv2\cf4 \strokec4 .destroyAllWindows()\cb1 \
+\cb3             \cf12 \strokec12 detector\cf4 \strokec4 .close()\cb1 \
+\cb3             \cf12 \strokec12 exit\cf4 \strokec4 ()\cb1 \
+\
+\cb3     \cf11 \strokec11 print\cf4 \strokec4 (\cf13 \strokec13 f\cf9 \strokec9 "  \uc0\u10004  Done with [\cf13 \strokec13 \{\cf12 \strokec12 sign\cf4 \strokec4 .\cf11 \strokec11 upper\cf4 \strokec4 ()\cf13 \strokec13 \}\cf9 \strokec9 ]\cf14 \strokec14 \\n\cf9 \strokec9 "\cf4 \strokec4 )\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf12 \cb3 \strokec12 cap\cf4 \strokec4 .release()\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 cv2\cf4 \strokec4 .destroyAllWindows()\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf12 \cb3 \strokec12 detector\cf4 \strokec4 .close()\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb3 \strokec11 print\cf4 \strokec4 (\cf9 \strokec9 "\uc0\u55356 \u57225  Done! Saved to:"\cf4 \strokec4 , \cf7 \strokec7 OUTPUT_CSV\cf4 \strokec4 )\cb1 \
+}
